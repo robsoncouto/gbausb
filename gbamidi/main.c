@@ -6,16 +6,18 @@ This program is free software: you can redistribute it and/or modify
 t under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
-	    
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-			    
+
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#define F_CPU 20000000
+#define F_CPU 16000000
+#define UART_BAUD_RATE 38400
+
 #include <avr/io.h>
 #include "util/delay.h"
 #include <stdio.h>
@@ -27,6 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "gbasendrom.h"
 #include "gbaserial.h"
 #include "midi.h"
+
+#include "serial/uart.h"
+
 
 void mainLoop(void)  __attribute__ ((noreturn));
 int main(void)  __attribute__ ((noreturn));
@@ -93,15 +98,15 @@ void mainLoop(void) {
 
 int main(void) {
 	gbaSerInit();
+	uart_init(UART_BAUD_SELECT(UART_BAUD_RATE,F_CPU));
 	_delay_ms(600); //GBA boot up delay
 	gbaSendRom(0, 1024*14);
 	_delay_ms(3000); //GBA hates to receive non-multiboot stuff while still booting.
 
 	//Ok, GBA program oughtta be running now. Go be a midi<->gbaserial converter.
 	//Fix int vectors to boot loader range
-	MCUCR=1; MCUCR=2;
-	sei();
-	//and go!
-	midiInit();
-	mainLoop();
+	//MCUCR=1; MCUCR=2;
+	while (1) {
+		/* code */
+	}
 }

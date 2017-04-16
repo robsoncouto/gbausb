@@ -4,13 +4,13 @@
 # is public domain), believed to be neutral to any flavor of "make"
 # (GNU make, BSD make, SysV make)
 
-MCU = atmega168
-BOOTLOADER_ADDRESS=0x3800
+MCU = atmega8
+BOOTLOADER_ADDRESS=0x1800
 FUSEOPT= -U lock:w:0x2f:m -U hfuse:w:0xdF:m -U lfuse:w:0xFf:m -U efuse:w:0x00:m
 
 FORMAT = ihex
 TARGET = gbamidi
-SRC = main.c gbaserial.c gbaencrypt.c gbacrc.c midi.c gbasendrom.c
+SRC = main.c gbaserial.c gbaencrypt.c gbacrc.c gbasendrom.c serial/uart.c
 DEPS=
 ASRC =
 OPT = s
